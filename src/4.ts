@@ -1,4 +1,4 @@
-// Клас Key для створення ключа
+
 class Key {
     private signature: number;
   
@@ -11,7 +11,7 @@ class Key {
     }
   }
   
-  // Клас Person
+
   class Person {
     private key: Key;
   
@@ -24,43 +24,40 @@ class Key {
     }
   }
   
-  // Абстрактний клас House
+
   abstract class House {
     protected door: boolean;
+    protected  key: Key;
     private tenants: Person[] = [];
+
+    constructor(key: Key) {
+      this.key = key;
+    }
   
     comeIn(person: Person): void {
       if (this.door) {
         this.tenants.push(person);
-        console.log("Вітаємо вас у будинку!");
+        console.log("The door is opened.");
       } else {
-        console.log("Двері закриті, ви не можете увійти.");
+        console.log("Invalid key. The door remains closed.");
       }
     }
   
     abstract openDoor(key: Key): void;
   }
   
-  // Клас MyHouse успадковується від House
+  
   class MyHouse extends House {
-    private key: Key;
-  
-    constructor(key: Key) {
-      super();
-      this.key = key;
-    }
-  
     openDoor(key: Key): void {
       if (key.getSignature() === this.key.getSignature()) {
-        this.door = true;
-        console.log("Двері відчинені.");
+        this['door'] = true; 
+        console.log('The door is opened.');
       } else {
-        console.log("Невірний ключ. Двері залишаються закритими.");
+        console.log('Invalid key. The door remains closed.');
       }
     }
   }
   
-  // Створення ключа, будинку та людини
   const key = new Key();
   const myHouse = new MyHouse(key);
   const person = new Person(key);
@@ -68,3 +65,7 @@ class Key {
   // Відкриття дверей і спроба входу
   myHouse.openDoor(person.getKey());
   myHouse.comeIn(person);
+
+  console.log('Мешканці будинку:', myHouse['tenants']); 
+
+  export {};
